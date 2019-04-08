@@ -1,9 +1,10 @@
-from modules.qt_face_recognizer import FaceRecognizer
-from PyQt5 import QtWidgets
 import argparse
 import sys
 from pathlib import Path
-import time
+
+from modules.qt_face_recognizer import FaceRecognizer
+from PyQt5 import QtWidgets
+
 
 def main():
     parser = argparse.ArgumentParser(description="動画ファイルまたはWebカメラから顔を認識するスクリプト")
@@ -25,6 +26,7 @@ def main():
     recognizer = FaceRecognizer(video, out_path=out_path)
     recognizer.stream()
     sys.exit(app.exec_())
+
 
 if __name__ == '__main__':
     main()
