@@ -5,6 +5,7 @@ from threading import Thread
 import cv2
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# from dark_recognizer import draw_rectangles, recognize_face
 from face_recognizer import draw_rectangles, recognize_face
 
 

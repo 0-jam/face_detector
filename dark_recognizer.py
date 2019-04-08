@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import settings
 from darkflow.net.build import TFNet
 
-options = {'model': str(settings.YOLO_CFG), 'load': str(settings.YOLO_WEIGHTS), 'threshold': 0.1}
+options = {'model': str(settings.YOLO_CFG), 'load': str(settings.YOLO_WEIGHTS), 'threshold': 0.1, 'gpu': 0.5}
 tfnet = TFNet(options)
 
 
