@@ -1,5 +1,4 @@
 import argparse
-import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -29,7 +28,7 @@ def draw_rectangles(img, faces):
 
     # 引数imgは上書きされているが、
     # 代入しやすいように戻り値にしている
-    return img
+    # return img
 
 
 def main():
