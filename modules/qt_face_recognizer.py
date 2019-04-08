@@ -1,12 +1,15 @@
+import time
+from queue import Queue
+from threading import Thread
+
 import cv2
 from PyQt5 import QtCore, QtGui, QtWidgets
-from face_recognizer import recognize_face, draw_rectangles
-import time
-from threading import Thread
-from queue import Queue
+
+from face_recognizer import draw_rectangles, recognize_face
+
 
 class FaceRecognizer():
-    def __init__(self, video, queue_size=128, out_path=""):
+    def __init__(self, video, out_path=""):
         self.video = cv2.VideoCapture(video)
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -20,25 +23,14 @@ class FaceRecognizer():
         else:
             self.out = None
 
-        area = self.orig_size[0] * self.orig_size[1]
-        if area >= 1920 * 1080:
-            self.scale_factor = 2
-            self.min_size = 100
-        elif area >= 640 * 480:
-            self.scale_factor = 1.3
-            self.min_size = 50
-        else:
-            self.scale_factor = 1.1
-            self.min_size = 50
-
-        self.frames = Queue(maxsize=queue_size)
+        self.frames = Queue(maxsize=128)
         self.stopped = False
 
         frame_loader = Thread(target=self.load_frame, args=())
         frame_loader.daemon = True
         frame_loader.start()
 
-    ## 動画から顔を認識し、四角で囲んで処理済みフレームself.framesに追加
+    # 動画から顔を認識し、四角で囲んで処理済みフレームself.framesに追加
     def load_frame(self):
         start_time = time.time()
         while self.video.isOpened():
@@ -49,7 +41,7 @@ class FaceRecognizer():
                 ret, frame = self.video.read()
 
                 if ret:
-                    faces = recognize_face(frame, scale_factor=self.scale_factor)
+                    faces = recognize_face(frame)
                     if len(faces) > 0:
                         draw_rectangles(frame, faces)
 
@@ -64,7 +56,8 @@ class FaceRecognizer():
                     orig_frames = self.video.get(cv2.CAP_PROP_FRAME_COUNT)
                     elapsed_time = time.time() - start_time
                     fps = orig_frames / elapsed_time
-                    print("video stopped, {:.2f} sec taken for load {} frames ({:.2f} FPS, {:.2f} % speed)".format(
+                    print('Video stopped')
+                    print("{:.2f} sec taken for loading {} frames ({:.2f} FPS, {:.2f} % speed)".format(
                         elapsed_time,
                         int(orig_frames),
                         fps,
@@ -72,7 +65,7 @@ class FaceRecognizer():
                     ))
                     return
 
-    ## 事前に処理されたフレームを画面に表示
+    # 事前に処理されたフレームを画面に表示
     def stream(self):
         self.view = QtWidgets.QGraphicsView()
         self.view.setViewport(QtWidgets.QOpenGLWidget())
@@ -85,7 +78,7 @@ class FaceRecognizer():
 
         self.start_time = time.time()
         print("Original FPS:", self.orig_fps)
-        # mspf: milliseconds per frame（1フレームが表示され続ける時間(ms)）
+        # mspf: milliseconds per frame
         mspf = (1 / self.orig_fps) * 1000
         frame_updater.start()
 
@@ -95,8 +88,9 @@ class FaceRecognizer():
 
         self.view.show()
 
-    ## 画面に表示する内容を更新
+    # 画面に表示する内容を更新
     num_frames = 0
+
     def update_frame(self):
         if not self.frame_buffered():
             return
@@ -127,7 +121,7 @@ class FaceRecognizer():
     def stop(self):
         self.stopped = True
 
-    ## FPSを取得してウィンドウタイトルに表示
+    # FPSを取得してウィンドウタイトルに表示
     def get_fps(self):
         if self.stopped:
             return

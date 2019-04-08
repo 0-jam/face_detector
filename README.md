@@ -9,7 +9,7 @@
 1. [Environment](#environment)
    1. [Software](#software)
 1. [Todo & Issues](#todo--issues)
-1. [Installation (Windows)](#installation-windows)
+1. [Installation](#installation)
 1. [Configuration](#configuration)
 1. [Usage](#usage)
 
@@ -19,9 +19,8 @@
 
 ### Software
 
-- Python >= 3.6.7
-- Windows 10 1803
-- Ubuntu 18.04.1
+- Python >= 3.7.2
+- Ubuntu 18.04.2
 
 ## Todo & Issues
 
@@ -33,27 +32,24 @@
         - [x] カメラ
     - [x] [静止画](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html#face-detection)
 
-## Installation (Windows)
+## Installation
 
-- [Python公式のダウンロードページ(3.6.7)][pydl]から"Windows x86-64 executable installer"をクリックしてダウンロード、ファイルを実行してインストール
-- pathを通す（コマンドラインから実行できるようにする）
-    1. 「システム環境変数の編集」（スタートメニューから"env"と検索すると出てくる）から「環境変数」
-    1. 「ユーザー環境変数」の"Path"をクリックして選択→「編集」
-    1. 「新規」→`C:\Users\<ユーザー名>\AppData\Local\Programs\Python\Python36\`
-    1. 「新規」→`C:\Users\<ユーザー名>\AppData\Local\Programs\Python\Python36\Scripts\`
-- OpenCVの[本体][opencv]
-
-```ps1
-# これが通ればインストール成功
-> python -V
-Python 3.6.7
-# pipアップデート
-> python -m pip install -U pip
+```bash
+# video_recognizer.py
 # 必要パッケージインストール
-> pip install opencv-python python-dotenv matplotlib numpy pyqt5
+$ pip install opencv-python python-dotenv matplotlib numpy pyqt5
 # バージョン番号が表示されればインストール成功
-> python -c "import cv2; print(cv2.__version__)"
-3.4.3
+$ python -c "import cv2; print(cv2.__version__)"
+4.0.0
+
+# dark_recognizer.py
+$ pip install Cython
+$ git clone git@github.com:thtrieu/darkflow.git
+$ cd darkflow
+$ python setup.py build_ext --inplace
+$ pip install .
+$ mkdir weights
+$ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-tiny.weights
 ```
 
 ## Configuration
