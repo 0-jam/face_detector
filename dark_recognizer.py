@@ -24,14 +24,13 @@ def recognize_face(img, scale_factor=2):
 # 物体が認識されなければ何も描画されない
 def draw_rectangles(img, objects):
     for obj in objects:
-        confidence = obj["confidence"]
         topleft = obj["topleft"]
         bottomright = obj["bottomright"]
         cv2.rectangle(
             img,
             (topleft["x"], topleft["y"]),
             (bottomright["x"], bottomright["y"]),
-            (int(255 * confidence), 0, 0),
+            (int(255 * obj["confidence"]), 0, 0),
             2
         )
 

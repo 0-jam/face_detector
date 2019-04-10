@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 from modules.qt_face_recognizer import FaceRecognizer
-from PyQt5 import QtWidgets
+from PySide2 import QtWidgets
 
 
 def main():

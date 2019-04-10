@@ -1,7 +1,7 @@
 # Face Detector
 
 - [OpenCV](https://pypi.org/project/opencv-python/)を使った動画顔認識システム
-- 静止画顔認識結果の表示にMatplotlibを、動画顔認識結果の表示にQtをそれぞれ使用
+- 静止画顔認識結果の表示にMatplotlibを、動画顔認識結果の表示にQt ([Qt for Python](https://doc.qt.io/qtforpython/index.html)) をそれぞれ使用
     - Qtの描画の一部にOpenGLを使用
 
 ---
@@ -37,7 +37,7 @@
 ```bash
 # video_recognizer.py
 # 必要パッケージインストール
-$ pip install opencv-python python-dotenv matplotlib numpy pyqt5
+$ pip install opencv-python python-dotenv matplotlib numpy PySide2
 # バージョン番号が表示されればインストール成功
 $ python -c "import cv2; print(cv2.__version__)"
 4.0.0

@@ -3,13 +3,13 @@ from queue import Queue
 from threading import Thread
 
 import cv2
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 # from dark_recognizer import draw_rectangles, recognize_face
-from face_recognizer import draw_rectangles, recognize_face
+from modules.image_recognizer import draw_rectangles, recognize_face
 
 
-class FaceRecognizer():
+class FaceRecognizer(object):
     def __init__(self, video, out_path=""):
         self.video = cv2.VideoCapture(video)
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
