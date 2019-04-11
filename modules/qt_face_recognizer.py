@@ -5,14 +5,14 @@ from threading import Thread
 import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
 
-# from dark_recognizer import draw_rectangles, recognize_face
+# from modules.dark_recognizer import draw_rectangles, recognize_face
 from modules.image_recognizer import draw_rectangles, recognize_face
 
 MAX_FRAMES_NUM = 64
 
 
 class FaceRecognizer(object):
-    def __init__(self, video, out_path=""):
+    def __init__(self, video, out_path=''):
         self.video = cv2.VideoCapture(video)
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
