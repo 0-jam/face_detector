@@ -1,0 +1,25 @@
+import cv2
+from PySide2 import QtGui, QtWidgets
+
+
+def cv2pixmap(cvimage):
+    cvimage = cv2.cvtColor(cvimage, cv2.COLOR_BGR2RGB)
+    height, width, dim = cvimage.shape
+
+    return QtGui.QPixmap.fromImage(QtGui.QImage(cvimage.data, width, height, dim * width, QtGui.QImage.Format_RGB888))
+
+
+class ImageArea(QtWidgets.QOpenGLWidget):
+    def __init__(self):
+        super().__init__()
+        self.initializeGL()
+
+    def initializeGL(self):
+        self.label = QtWidgets.QLabel()
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
+    def setCVImage(self, cvimage):
+        self.label.setPixmap(cv2pixmap(cvimage))

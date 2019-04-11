@@ -3,13 +3,16 @@ from queue import Queue
 from threading import Thread
 
 import cv2
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
-from face_recognizer import draw_rectangles, recognize_face
+# from modules.dark_recognizer import draw_rectangles, recognize_face
+from modules.image_recognizer import draw_rectangles, recognize_face
+
+MAX_FRAMES_NUM = 64
 
 
-class FaceRecognizer():
-    def __init__(self, video, out_path=""):
+class FaceRecognizer(object):
+    def __init__(self, video, out_path=''):
         self.video = cv2.VideoCapture(video)
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -23,7 +26,7 @@ class FaceRecognizer():
         else:
             self.out = None
 
-        self.frames = Queue(maxsize=128)
+        self.frames = Queue(maxsize=MAX_FRAMES_NUM)
         self.stopped = False
 
         frame_loader = Thread(target=self.load_frame, args=())
@@ -33,10 +36,7 @@ class FaceRecognizer():
     # 動画から顔を認識し、四角で囲んで処理済みフレームself.framesに追加
     def load_frame(self):
         start_time = time.time()
-        while self.video.isOpened():
-            if self.stopped:
-                return
-
+        while not self.stopped:
             if not self.frames.full():
                 ret, frame = self.video.read()
 
@@ -52,11 +52,11 @@ class FaceRecognizer():
 
                     self.frames.put(frame)
                 else:
-                    self.stop()
                     orig_frames = self.video.get(cv2.CAP_PROP_FRAME_COUNT)
                     elapsed_time = time.time() - start_time
                     fps = orig_frames / elapsed_time
                     print('Video stopped')
+                    self.stop()
                     print("{:.2f} sec taken for loading {} frames ({:.2f} FPS, {:.2f} % speed)".format(
                         elapsed_time,
                         int(orig_frames),
@@ -107,7 +107,7 @@ class FaceRecognizer():
 
         # メモリ使用量削減のため、古いフレームを配列から削除
         items = self.scene.items()
-        if len(items) > 4:
+        if len(items) > MAX_FRAMES_NUM / 2:
             self.scene.removeItem(items[-1])
 
         self.view.setScene(self.scene)
@@ -119,6 +119,7 @@ class FaceRecognizer():
         return self.frames.qsize() > 0
 
     def stop(self):
+        self.video.release()
         self.stopped = True
 
     # FPSを取得してウィンドウタイトルに表示
