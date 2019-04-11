@@ -3,7 +3,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# .envファイルを読む
 load_dotenv()
 
 # FACE_API_KEY = os.environ.get('FACE_API_KEY')
