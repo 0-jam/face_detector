@@ -1,7 +1,7 @@
 # Face Detector
 
 - [OpenCV](https://pypi.org/project/opencv-python/)を使った動画顔認識システム
-- 静止画顔認識結果の表示にMatplotlibを、動画顔認識結果の表示にQt ([Qt for Python](https://doc.qt.io/qtforpython/index.html)) をそれぞれ使用
+- 表示にはQt ([Qt for Python](https://doc.qt.io/qtforpython/index.html)) を使用
     - Qtの描画の一部にOpenGLを使用
 
 ---
@@ -19,7 +19,7 @@
 
 ### Software
 
-- Python >= 3.7.2
+- Python 3.7.3
 - Ubuntu 18.04.2
 
 ## Todo & Issues
@@ -37,10 +37,10 @@
 ```bash
 # video_recognizer.py
 # 必要パッケージインストール
-$ pip install opencv-python python-dotenv matplotlib numpy PySide2
+$ pip install opencv-python python-dotenv numpy PySide2
 # バージョン番号が表示されればインストール成功
 $ python -c "import cv2; print(cv2.__version__)"
-4.0.0
+4.0.1
 
 # dark_recognizer.py
 $ pip install Cython

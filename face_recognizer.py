@@ -2,18 +2,16 @@ import argparse
 from pathlib import Path
 
 import cv2
-import matplotlib.pyplot as plt
+from PySide2 import QtWidgets
 
-import settings
 from modules.image_recognizer import draw_rectangles, recognize_face
-
-cascade = cv2.CascadeClassifier(str(settings.CASCADE_CLASSIFIER_PATH))
+from modules.qt_image_recognizer import ImageArea
 
 
 def main():
-    parser = argparse.ArgumentParser(description='画像から顔を認識するスクリプト')
-    parser.add_argument('input', type=str, help='入力ファイルのパス')
-    parser.add_argument('-o', '--output', type=str, help='出力ファイルのパス（デフォルト：なし（保存しない））')
+    parser = argparse.ArgumentParser(description='Recognize faces from an image file')
+    parser.add_argument('input', type=str, help='Input file')
+    parser.add_argument('--output', '-o', type=str, help='Output file (default: none)')
     args = parser.parse_args()
 
     img = cv2.imread(str(Path(args.input)))
@@ -21,11 +19,17 @@ def main():
     print('found faces:', len(faces))
     draw_rectangles(img, faces)
 
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     if args.output:
-        plt.savefig(str(Path(args.output)))
+        print('Saving image ...')
+        cv2.imwrite(args.output, img)
 
-    plt.show()
+    app = QtWidgets.QApplication()
+
+    window = ImageArea()
+    window.setCVImage(img)
+    window.show()
+
+    app.exit(app.exec_())
 
 
 if __name__ == '__main__':
