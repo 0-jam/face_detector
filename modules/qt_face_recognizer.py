@@ -33,7 +33,7 @@ class FaceRecognizer(object):
         frame_loader.daemon = True
         frame_loader.start()
 
-    # 動画から顔を認識し、四角で囲んで処理済みフレームself.framesに追加
+    # 動画から顔を認識し，四角で囲んで処理済みフレームself.framesに追加
     def load_frame(self):
         start_time = time.time()
         while not self.stopped:
@@ -105,7 +105,7 @@ class FaceRecognizer(object):
         self.item = QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap.fromImage(self.image))
         self.scene.addItem(self.item)
 
-        # メモリ使用量削減のため、古いフレームを配列から削除
+        # メモリ使用量削減のため，古いフレームを配列から削除
         items = self.scene.items()
         if len(items) > MAX_FRAMES_NUM / 2:
             self.scene.removeItem(items[-1])

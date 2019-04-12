@@ -1,5 +1,4 @@
 import argparse
-import sys
 from pathlib import Path
 
 from modules.qt_face_recognizer import FaceRecognizer
@@ -25,7 +24,7 @@ def main():
     app = QtWidgets.QApplication([])
     recognizer = FaceRecognizer(video, out_path=out_path)
     recognizer.stream()
-    sys.exit(app.exec_())
+    app.exit(app.exec_())
 
 
 if __name__ == '__main__':
