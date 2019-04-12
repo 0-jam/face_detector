@@ -33,7 +33,7 @@ class FaceRecognizer(object):
         frame_loader.daemon = True
         frame_loader.start()
 
-    # 動画から顔を認識し，四角で囲んで処理済みフレームself.framesに追加
+    # Preprocess the video
     def load_frame(self):
         start_time = time.time()
         while not self.stopped:
@@ -65,7 +65,7 @@ class FaceRecognizer(object):
                     ))
                     return
 
-    # 事前に処理されたフレームを画面に表示
+    # Display preprocessed frames
     def stream(self):
         self.view = QtWidgets.QGraphicsView()
         self.view.setViewport(QtWidgets.QOpenGLWidget())
@@ -88,7 +88,6 @@ class FaceRecognizer(object):
 
         self.view.show()
 
-    # 画面に表示する内容を更新
     num_frames = 0
 
     def update_frame(self):
@@ -105,7 +104,7 @@ class FaceRecognizer(object):
         self.item = QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap.fromImage(self.image))
         self.scene.addItem(self.item)
 
-        # メモリ使用量削減のため，古いフレームを配列から削除
+        # Remove old frames for reduce memory usage
         items = self.scene.items()
         if len(items) > MAX_FRAMES_NUM / 2:
             self.scene.removeItem(items[-1])
@@ -122,7 +121,6 @@ class FaceRecognizer(object):
         self.video.release()
         self.stopped = True
 
-    # FPSを取得してウィンドウタイトルに表示
     def get_fps(self):
         if self.stopped:
             return

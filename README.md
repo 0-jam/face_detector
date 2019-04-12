@@ -38,7 +38,7 @@
 $ pip install opencv-python python-dotenv numpy PySide2
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
-4.0.1
+4.1.0
 
 # dark_recognizer.py
 $ pip install Cython
@@ -69,8 +69,8 @@ CASCADE_CLASSIFIER_PATH = "path\\to\\classifier.xml"
 
 ```ps1
 > python .\face_recognizer.py path/to/image
-# 入力ファイルを渡さなかった場合，端末のWebカメラが起動する
-# Webカメラが無効な場合，何もせずに終了する
+# Start your computer's webcam if no file passed
+# If there is no available webcams, script will do nothing and stop
 > python .\video_recognizer.py -i images/Walking.mp4
 ```
 
