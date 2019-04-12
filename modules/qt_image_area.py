@@ -9,17 +9,24 @@ def cv2pixmap(cvimage):
     return QtGui.QPixmap.fromImage(QtGui.QImage(cvimage.data, width, height, dim * width, QtGui.QImage.Format_RGB888))
 
 
-class ImageArea(QtWidgets.QOpenGLWidget):
+# Non-OpenGL image displaying widget
+class ImageArea(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
+        # TODO: OpenGL implementation
         self.initializeGL()
 
     def initializeGL(self):
-        self.label = QtWidgets.QLabel()
+        print('Initializing image area ...')
+        self.view = QtWidgets.QGraphicsView()
+        self.view.setupViewport(self)
+
+        self.scene = QtWidgets.QGraphicsScene()
 
         layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(self.label)
+        layout.addWidget(self.view)
         self.setLayout(layout)
 
     def setCVImage(self, cvimage):
-        self.label.setPixmap(cv2pixmap(cvimage))
+        self.scene.addItem(QtWidgets.QGraphicsPixmapItem(cv2pixmap(cvimage)))
+        self.view.setScene(self.scene)
