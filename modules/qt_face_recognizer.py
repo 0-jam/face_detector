@@ -70,6 +70,7 @@ class FaceRecognizer(object):
         self.view = QtWidgets.QGraphicsView()
         self.view.setViewport(QtWidgets.QOpenGLWidget())
         self.view.setGeometry(0, 0, self.orig_size[0], self.orig_size[1])
+        self.view.setViewportUpdateMode(QtWidgets.QGraphicsView.SmartViewportUpdate)
         self.scene = QtWidgets.QGraphicsScene()
         self.update_frame()
 
@@ -78,12 +79,12 @@ class FaceRecognizer(object):
 
         self.start_time = time.time()
         print("Original FPS:", self.orig_fps)
-        # mspf: milliseconds per frame
-        mspf = (1 / self.orig_fps) * 1000
         frame_updater.start()
 
         fps_counter = QtCore.QTimer(self.view)
         fps_counter.timeout.connect(self.get_fps)
+        # mspf: milliseconds per frame
+        mspf = (1 / self.orig_fps) * 1000
         fps_counter.start(mspf)
 
         self.view.show()
