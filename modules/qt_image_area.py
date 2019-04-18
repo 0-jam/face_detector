@@ -4,6 +4,7 @@ from queue import Queue
 import time
 
 from modules.image_recognizer import draw_rectangles, recognize_face
+# from modules.dark_recognizer import draw_rectangles, recognize_face
 
 
 def cv2pixmap(cvimage):
@@ -13,38 +14,38 @@ def cv2pixmap(cvimage):
     return QtGui.QPixmap.fromImage(QtGui.QImage(cvimage.data, width, height, dim * width, QtGui.QImage.Format_RGB888))
 
 
-# Non-OpenGL image displaying widget
+# Image displaying widget
 class ImageArea(QtWidgets.QOpenGLWidget):
     def __init__(self):
         super().__init__()
-        # TODO: OpenGL implementation
-        # self.initializeGL()
+
+        # Initialize viewport
         self.view = QtWidgets.QGraphicsView()
         self.view.setupViewport(self)
         self.view.setViewportUpdateMode(QtWidgets.QGraphicsView.SmartViewportUpdate)
         self.scene = QtWidgets.QGraphicsScene()
 
+        # Placing viewport to the window
         layout = QtWidgets.QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.view)
         self.setLayout(layout)
 
+    # OpenGLWidget's virtual functions
+    # Actually do nothing
     def initializeGL(self):
-        # print('Initializing image area ...')
         pass
 
     def paintGL(self):
-        # print('Painting ...')
         pass
 
     def resizeGL(self, w, h):
         # print('Resizing ...', w, h)
         self.view.setGeometry(0, 0, w, h)
-        self.scene.setSceneRect(QtCore.QRectF(0, 0, w, h))
 
     def setCVImage(self, cvimage):
         items = self.scene.items()
-        if len(items) > 3:
+        if len(items) > 1:
             self.scene.removeItem(items[-1])
 
         self.scene.addItem(QtWidgets.QGraphicsPixmapItem(cv2pixmap(cvimage)))
@@ -53,31 +54,39 @@ class ImageArea(QtWidgets.QOpenGLWidget):
 
 class VideoArea(ImageArea):
     def __init__(self, video_path=None):
+        # Loading video
         self.video = cv2.VideoCapture(video_path)
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.frames = Queue(maxsize=64)
-
-        self.stopped = False
+        self.num_frames = 0
 
         super().__init__()
 
-    num_frames = 0
+        # Initializing frame loader
+        self.loader = QtCore.QTimer(self.view)
+        self.loader.timeout.connect(self.load_frame)
+
+        # Initializing viewport updater
+        self.updater = QtCore.QTimer(self.view)
+        self.updater.timeout.connect(self.update)
+
+        # Initializing FPS getter
+        self.fps_counter = QtCore.QTimer(self.view)
+        self.fps_counter.timeout.connect(self.show_fps)
+
+    def closeEvent(self, event):
+        self.stop_video()
+        self.stop_render()
 
     def show(self):
+        # Set window size
         orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.setGeometry(0, 0, orig_size[0], orig_size[1])
 
-        self.loader = QtCore.QTimer(self.view)
-        self.loader.timeout.connect(self.load_frame)
         self.loader.start()
-
-        self.updater = QtCore.QTimer(self.view)
-        self.updater.timeout.connect(self.update)
         self.updater.start()
 
         self.start_time = time.time()
-        self.fps_counter = QtCore.QTimer(self.view)
-        self.fps_counter.timeout.connect(self.get_fps)
         self.fps_counter.start((1 / self.orig_fps) * 1000)
 
         super().show()
@@ -87,8 +96,8 @@ class VideoArea(ImageArea):
 
         if ret:
             self.num_frames += 1
+
             faces = recognize_face(frame)
-            # print('found faces:', len(faces))
             draw_rectangles(frame, faces)
             self.frames.put(frame)
         else:
@@ -107,21 +116,27 @@ class VideoArea(ImageArea):
 
     def stop_video(self):
         print('Video stopped')
+        print(self.get_fps())
+
         self.video.release()
         self.loader.stop()
-        self.stopped = True
 
     def stop_render(self):
         print('Rendering stopped')
+        print(self.get_fps())
+
         self.updater.stop()
         self.fps_counter.stop()
 
     def get_fps(self):
         elapsed_time = time.time() - self.start_time
         fps = self.num_frames / elapsed_time
-        self.setWindowTitle("Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)".format(
+        return "Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)".format(
             elapsed_time,
             self.num_frames,
             fps,
             (fps / self.orig_fps) * 100
-        ))
+        )
+
+    def show_fps(self):
+        self.setWindowTitle(self.get_fps())

@@ -108,7 +108,7 @@ class FaceRecognizer(object):
 
         # Remove old frames for reduce memory usage
         items = self.scene.items()
-        if len(items) > MAX_FRAMES_NUM / 2:
+        if len(items) > 2:
             self.scene.removeItem(items[-1])
 
         self.view.setScene(self.scene)
