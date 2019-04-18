@@ -60,7 +60,11 @@ $ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-ti
 # Path to OpenCV classifier
 # <directory which OpenCV installed>/opencv/sources/data
 # Backslashes (\) needs to be escaped
-CASCADE_CLASSIFIER_PATH = "path\\to\\classifier.xml"
+CASCADE_CLASSIFIER_TYPE = 'haarcascade_frontalface_default.xml'
+
+# Path to YOLOv2 classifier
+YOLO_WEIGHTS = 'weights/yolov2.weights'
+YOLO_CFG = 'cfg/yolov2.cfg'
 ```
 
 ## Usage

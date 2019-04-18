@@ -1,7 +1,7 @@
 import cv2
 import settings
 
-cascade = cv2.CascadeClassifier(str(settings.CASCADE_CLASSIFIER_PATH))
+cascade = cv2.CascadeClassifier(cv2.data.haarcascades + settings.CASCADE_CLASSIFIER_TYPE)
 
 
 # Detect faces from img
