@@ -8,6 +8,7 @@
 1. [Environment](#environment)
    1. [Software](#software)
 1. [Todo & Issues](#todo--issues)
+   1. [Closing OpenGL window](#closing-opengl-window)
 1. [Installation](#installation)
 1. [Configuration](#configuration)
 1. [Usage](#usage)
@@ -23,13 +24,23 @@
 
 ## Todo & Issues
 
-- [ ] OpenGL support for displaying to improve rendering performance
-- [ ] Got `Segmentation Fault` when closed window (Linux only?)
+- [x] OpenGL support for displaying to improve rendering performance
 - [x] Pure OpenCV
     - [x] [Video](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html)
         - [x] Reading from the file
         - [x] Reading from the webcam
     - [x] [Picture](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html#face-detection)
+
+### Closing OpenGL window
+
+- It dumps core when closing window includes OpenGL widget
+
+```
+[xcb] Unknown request in queue while appending request
+[xcb] Most likely this is a multi-threaded client and XInitThreads has not been called
+[xcb] Aborting, sorry about that.
+python: ../../src/xcb_io.c:151: append_pending_request: Assertion `!xcb_xlib_unknown_req_pending' failed.
+```
 
 ## Installation
 
