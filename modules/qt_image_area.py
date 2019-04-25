@@ -1,9 +1,12 @@
+import time
+from pathlib import Path
+from queue import Queue
+
 import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
-from queue import Queue
-import time
 
 from modules.image_recognizer import draw_rectangles, recognize_face
+
 # from modules.dark_recognizer import draw_rectangles, recognize_face
 
 
@@ -40,8 +43,7 @@ class ImageArea(QtWidgets.QOpenGLWidget):
         pass
 
     def resizeGL(self, w, h):
-        # print('Resizing ...', w, h)
-        self.view.setGeometry(0, 0, w, h)
+        pass
 
     def setCVImage(self, cvimage):
         items = self.scene.items()
@@ -53,13 +55,24 @@ class ImageArea(QtWidgets.QOpenGLWidget):
 
 
 class VideoArea(ImageArea):
-    def __init__(self, video_path=None):
+    def __init__(self, video_path, out_path=None):
         # Loading video
-        self.video = cv2.VideoCapture(video_path)
+        self.video = cv2.VideoCapture(str(Path(video_path)))
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
+        self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.frames = Queue(maxsize=64)
         self.num_frames = 0
 
+        self.out = None
+        if out_path:
+            self.out = cv2.VideoWriter(
+                str(Path(out_path)),
+                cv2.VideoWriter_fourcc(*'MJPG'),
+                self.orig_fps,
+                self.orig_size
+            )
+
+        # Set viewport
         super().__init__()
 
         # Initializing frame loader
@@ -80,13 +93,12 @@ class VideoArea(ImageArea):
 
     def show(self):
         # Set window size
-        orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        self.setGeometry(0, 0, orig_size[0], orig_size[1])
+        self.setGeometry(0, 0, self.orig_size[0], self.orig_size[1])
 
+        self.start_time = time.time()
         self.loader.start()
         self.updater.start()
 
-        self.start_time = time.time()
         self.fps_counter.start((1 / self.orig_fps) * 1000)
 
         super().show()
@@ -99,6 +111,7 @@ class VideoArea(ImageArea):
 
             faces = recognize_face(frame)
             draw_rectangles(frame, faces)
+
             self.frames.put(frame)
         else:
             self.stop_video()
@@ -109,7 +122,10 @@ class VideoArea(ImageArea):
             self.stop_render()
             return
 
-        self.setCVImage(self.frames.get())
+        frame = self.frames.get()
+        if self.out:
+            self.out.write(frame)
+        self.setCVImage(frame)
 
     def frame_buffered(self):
         return self.frames.qsize() > 0
@@ -124,6 +140,9 @@ class VideoArea(ImageArea):
     def stop_render(self):
         print('Rendering stopped')
         print(self.get_fps())
+
+        if self.out:
+            self.out.release()
 
         self.updater.stop()
         self.fps_counter.stop()
