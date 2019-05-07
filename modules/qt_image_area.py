@@ -6,7 +6,6 @@ import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
 
 from modules.image_recognizer import draw_rectangles, recognize_face
-
 # from modules.dark_recognizer import draw_rectangles, recognize_face
 
 
@@ -59,10 +58,12 @@ class VideoArea(ImageArea):
         # Loading video
         self.video = cv2.VideoCapture()
 
-        if type(video_path) == int:
-            self.video.open(video_path)
-        else:
-            self.video.open(str(Path(video_path)))
+        try:
+            video_path = int(video_path)
+        except ValueError:
+            video_path = str(Path(video_path))
+
+        self.video.open(video_path)
 
         if not self.video.isOpened():
             raise Exception('Could not open the video, please specify a valid video file path or webcam device number')

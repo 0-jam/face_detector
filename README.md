@@ -88,7 +88,7 @@ YOLO_CFG = 'cfg/yolov2.cfg'
 
 # Start your computer's webcam if no file passed
 # If there is no available webcams, script will do nothing and stop
-> python .\v_face_recognizer.py images/Walking.mp4
+> python .\v_face_recognizer.py -i images/Walking.mp4
 
 # Old version of the video object recognizer
 > python .\video_recognizer.py -i images/Walking.mp4
