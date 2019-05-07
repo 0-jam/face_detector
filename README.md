@@ -24,8 +24,9 @@
 
 ## Todo & Issues
 
+- [ ] YOLOv3
 - [x] OpenGL support for displaying to improve rendering performance
-- [x] Pure OpenCV
+- [x] OpenCV cascade classifier
     - [x] [Video](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html)
         - [x] Reading from the file
         - [x] Reading from the webcam
@@ -45,8 +46,8 @@ python: ../../src/xcb_io.c:151: append_pending_request: Assertion `!xcb_xlib_unk
 ## Installation
 
 ```bash
-# video_recognizer.py
-$ pip install opencv-python python-dotenv numpy PySide2
+# Common modules
+$ pip install opencv-python python-dotenv PySide2
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
 4.1.0
@@ -67,7 +68,7 @@ $ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-ti
 
 - Create `.env` file and add following settings
 
-```
+```bash
 # Path to OpenCV classifier
 # <directory which OpenCV installed>/opencv/sources/data
 # Backslashes (\) needs to be escaped
@@ -83,9 +84,13 @@ YOLO_CFG = 'cfg/yolov2.cfg'
 - `-h` option for help
 
 ```ps1
-> python .\face_recognizer.py path/to/image
+> python .\face_recognizer.py images/sample.jpg
+
 # Start your computer's webcam if no file passed
 # If there is no available webcams, script will do nothing and stop
+> python .\v_face_recognizer.py images/Walking.mp4
+
+# Old version of the video object recognizer
 > python .\video_recognizer.py -i images/Walking.mp4
 ```
 

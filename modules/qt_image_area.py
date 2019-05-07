@@ -57,7 +57,16 @@ class ImageArea(QtWidgets.QOpenGLWidget):
 class VideoArea(ImageArea):
     def __init__(self, video_path, out_path=None):
         # Loading video
-        self.video = cv2.VideoCapture(str(Path(video_path)))
+        self.video = cv2.VideoCapture()
+
+        if type(video_path) == int:
+            self.video.open(video_path)
+        else:
+            self.video.open(str(Path(video_path)))
+
+        if not self.video.isOpened():
+            raise Exception('Could not open the video, please specify a valid video file path or webcam device number')
+
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.frames = Queue(maxsize=64)
