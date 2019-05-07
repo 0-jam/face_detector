@@ -29,9 +29,9 @@ class FaceRecognizer(object):
         self.frames = Queue(maxsize=MAX_FRAMES_NUM)
         self.stopped = False
 
-        frame_loader = Thread(target=self.load_frame, args=())
-        frame_loader.daemon = True
-        frame_loader.start()
+        self.frame_loader = Thread(target=self.load_frame, args=())
+        self.frame_loader.daemon = True
+        self.frame_loader.start()
 
     # Preprocess the video
     def load_frame(self):
@@ -70,21 +70,22 @@ class FaceRecognizer(object):
         self.view = QtWidgets.QGraphicsView()
         self.view.setViewport(QtWidgets.QOpenGLWidget())
         self.view.setGeometry(0, 0, self.orig_size[0], self.orig_size[1])
+        self.view.setViewportUpdateMode(QtWidgets.QGraphicsView.SmartViewportUpdate)
         self.scene = QtWidgets.QGraphicsScene()
         self.update_frame()
 
-        frame_updater = QtCore.QTimer(self.view)
-        frame_updater.timeout.connect(self.update_frame)
+        self.frame_updater = QtCore.QTimer(self.view)
+        self.frame_updater.timeout.connect(self.update_frame)
 
         self.start_time = time.time()
         print("Original FPS:", self.orig_fps)
+        self.frame_updater.start()
+
+        self.fps_counter = QtCore.QTimer(self.view)
+        self.fps_counter.timeout.connect(self.get_fps)
         # mspf: milliseconds per frame
         mspf = (1 / self.orig_fps) * 1000
-        frame_updater.start()
-
-        fps_counter = QtCore.QTimer(self.view)
-        fps_counter.timeout.connect(self.get_fps)
-        fps_counter.start(mspf)
+        self.fps_counter.start(mspf)
 
         self.view.show()
 
@@ -92,6 +93,7 @@ class FaceRecognizer(object):
 
     def update_frame(self):
         if not self.frame_buffered():
+            # self.frame_updater.stop()
             return
 
         frame = self.get_frame()
@@ -106,7 +108,7 @@ class FaceRecognizer(object):
 
         # Remove old frames for reduce memory usage
         items = self.scene.items()
-        if len(items) > MAX_FRAMES_NUM / 2:
+        if len(items) > 2:
             self.scene.removeItem(items[-1])
 
         self.view.setScene(self.scene)
@@ -123,6 +125,7 @@ class FaceRecognizer(object):
 
     def get_fps(self):
         if self.stopped:
+            self.fps_counter.stop()
             return
 
         elapsed_time = time.time() - self.start_time
