@@ -34,7 +34,7 @@ class ImageArea(QtWidgets.QOpenGLWidget):
         self.setLayout(layout)
 
     # OpenGLWidget's virtual functions
-    # Actually do nothing
+    # Actually they do nothing
     def initializeGL(self):
         pass
 
