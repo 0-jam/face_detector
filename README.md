@@ -5,13 +5,13 @@
 
 ---
 
-1. [Environment](#environment)
-   1. [Software](#software)
-1. [Todo & Issues](#todo--issues)
-   1. [Closing OpenGL window](#closing-opengl-window)
-1. [Installation](#installation)
-1. [Configuration](#configuration)
-1. [Usage](#usage)
+1. [Environment](#Environment)
+   1. [Software](#Software)
+1. [Todo & Issues](#Todo--Issues)
+   1. [Closing OpenGL window](#Closing-OpenGL-window)
+1. [Installation](#Installation)
+1. [Configuration](#Configuration)
+1. [Usage](#Usage)
 
 ---
 
@@ -21,9 +21,11 @@
 
 - Python 3.7.3
 - Ubuntu 18.04.2
+- Windows 10 1903
 
 ## Todo & Issues
 
+- [ ] Add selecting camera resolution
 - [ ] YOLOv3
 - [x] OpenGL support for displaying to improve rendering performance
 - [x] OpenCV cascade classifier
@@ -67,11 +69,10 @@ $ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-ti
 ## Configuration
 
 - Create `.env` file and add following settings
+- To see available OpenCV classifiers, run `$ ls $(python -c 'import cv2; print(cv2.data.haarcascades)') | grep xml`
 
 ```bash
-# Path to OpenCV classifier
-# <directory which OpenCV installed>/opencv/sources/data
-# Backslashes (\) needs to be escaped
+# OpenCV classifier type
 CASCADE_CLASSIFIER_TYPE = 'haarcascade_frontalface_default.xml'
 
 # Path to YOLOv2 classifier
@@ -83,15 +84,11 @@ YOLO_CFG = 'cfg/yolov2.cfg'
 
 - `-h` option for help
 
-```ps1
-> python .\face_recognizer.py images/sample.jpg
+```bash
+$ python face_recognizer.py images/sample.jpg
 
 # Start your computer's webcam if no file passed
-# If there is no available webcams, script will do nothing and stop
-> python .\v_face_recognizer.py -i images/Walking.mp4
-
-# Old version of the video object recognizer
-> python .\video_recognizer.py -i images/Walking.mp4
+$ python v_face_recognizer.py -i images/Walking.mp4
 ```
 
 [tf]: https://www.tensorflow.org/
