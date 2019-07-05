@@ -33,17 +33,6 @@ class ImageArea(QtWidgets.QWidget):
         layout.addWidget(self.view)
         self.setLayout(layout)
 
-    # OpenGLWidget's virtual functions
-    # Actually they do nothing
-    def initializeGL(self):
-        pass
-
-    def paintGL(self):
-        pass
-
-    def resizeGL(self, w, h):
-        pass
-
     def setCVImage(self, cvimage):
         items = self.scene.items()
         if len(items) > 1:
