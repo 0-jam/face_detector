@@ -17,7 +17,7 @@ def cv2pixmap(cvimage):
 
 
 # Image displaying widget
-class ImageArea(QtWidgets.QOpenGLWidget):
+class ImageArea(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
@@ -32,17 +32,6 @@ class ImageArea(QtWidgets.QOpenGLWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.view)
         self.setLayout(layout)
-
-    # OpenGLWidget's virtual functions
-    # Actually they do nothing
-    def initializeGL(self):
-        pass
-
-    def paintGL(self):
-        pass
-
-    def resizeGL(self, w, h):
-        pass
 
     def setCVImage(self, cvimage):
         items = self.scene.items()
