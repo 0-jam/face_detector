@@ -17,7 +17,7 @@ def cv2pixmap(cvimage):
 
 
 # Image displaying widget
-class ImageArea(QtWidgets.QOpenGLWidget):
+class ImageArea(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
