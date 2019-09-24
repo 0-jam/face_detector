@@ -5,13 +5,13 @@
 
 ---
 
-1. [Environment](#Environment)
-   1. [Software](#Software)
-1. [Todo & Issues](#Todo--Issues)
-   1. [Closing OpenGL window](#Closing-OpenGL-window)
-1. [Installation](#Installation)
-1. [Configuration](#Configuration)
-1. [Usage](#Usage)
+1. [Environment](#environment)
+   1. [Software](#software)
+1. [Todo & Issues](#todo--issues)
+   1. [Closing OpenGL window](#closing-opengl-window)
+1. [Installation](#installation)
+1. [Configuration](#configuration)
+1. [Usage](#usage)
 
 ---
 
@@ -26,6 +26,7 @@
 
 ## Todo & Issues
 
+- [ ] Separate OpenCV video capture from Qt GUI
 - [ ] Add selecting camera resolution
 - Try various algorythms
     - [ ] YOLOv3
@@ -92,7 +93,7 @@ YOLO_CFG = 'cfg/yolov2.cfg'
 $ python face_recognizer.py images/sample.jpg
 
 # Start your computer's webcam if no file passed
-$ python v_face_recognizer.py -i images/Walking.mp4
+$ python v_face_recognizer.py -i images/sample.mp4
 ```
 
 [tf]: https://www.tensorflow.org/
