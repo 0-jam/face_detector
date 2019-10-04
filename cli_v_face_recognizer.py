@@ -1,14 +1,14 @@
 import argparse
-
-import cv2
+import json
 import time
 
+import cv2
+
 from modules.dark_recognizer import recognize_face
-# from modules.image_recognizer import recognize_face
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Recognize objects from an video file without showing any images')
+    parser = argparse.ArgumentParser(description='Recognize objects from a video file without showing any images')
     parser.add_argument('-i', '--input', type=str, help='Input file (default: Webcam on your computer)')
     args = parser.parse_args()
 
@@ -31,7 +31,7 @@ def main():
             objects = recognize_face(frame)
             elapsed_time = time.time() - start_time
             fps = num_frames / elapsed_time
-            print("Found objects: {}, Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)".format(
+            print('Found objects: {}, Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)'.format(
                 len(objects),
                 elapsed_time,
                 num_frames,
