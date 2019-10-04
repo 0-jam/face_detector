@@ -1,10 +1,12 @@
 import argparse
+# TODO: Support JSON output
 import json
 import time
 
 import cv2
 
-from modules.dark_recognizer import recognize_face
+from modules.cv_dark_recognizer import recognize_face
+# from modules.dark_recognizer import recognize_face
 
 
 def main():

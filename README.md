@@ -19,9 +19,8 @@
 
 ### Software
 
-- Python 3.7.3
-- Ubuntu 18.04.2
-- Arch Linux x86_64 (2019/7/4)
+- Python 3.7.4
+- Arch Linux x86_64 (2019/10/4)
 - Windows 10 1903
 
 ## Todo & Issues
@@ -29,7 +28,7 @@
 - [ ] Separate OpenCV video capture from Qt GUI
 - [ ] Add selecting camera resolution
 - Try various algorythms
-    - [ ] YOLOv3
+    - [x] YOLOv3
     - [ ] [M2Det](https://qijiezhao.github.io/imgs/m2det.pdf)
     - [ ] [SSD](https://arxiv.org/pdf/1512.02325.pdf)
 - [x] OpenGL support for displaying to improve rendering performance
