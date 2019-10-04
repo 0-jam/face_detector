@@ -3,8 +3,14 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+import settings
+
+cv2.ocl.useOpenCL()
+
 yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3.cfg', 'weights/yolov3.weights')
-labels = Path('labels.txt').open().read().split('\n')
+yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_OPENCL)
+
+labels = Path('yolo_labels/labels.txt').open().read().split('\n')
 layer_names = yolo_net.getLayerNames()
 output_layer_names = [layer_names[i[0] - 1] for i in yolo_net.getUnconnectedOutLayers()]
 
