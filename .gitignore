@@ -117,4 +117,4 @@ images/
 *.weights
 *.names
 *.cfg
-*.txt
+yolo_labels/*.txt

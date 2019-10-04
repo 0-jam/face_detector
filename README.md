@@ -22,6 +22,8 @@
 - Python 3.7.4
 - Arch Linux x86_64 (2019/10/4)
 - Windows 10 1903
+- TensorFlow < 2.0 (for Darkflow object recognizer)
+- OpenCV 4.1.1
 
 ## Todo & Issues
 
@@ -53,10 +55,10 @@ python: ../../src/xcb_io.c:151: append_pending_request: Assertion `!xcb_xlib_unk
 
 ```bash
 # Common modules
-$ pip install opencv-python python-dotenv PySide2
+$ pip install -U --user -r requirements.txt
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
-4.1.0
+4.1.1
 
 # dark_recognizer.py
 $ pip install Cython
