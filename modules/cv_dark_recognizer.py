@@ -7,8 +7,11 @@ import settings
 
 cv2.ocl.useOpenCL()
 
-yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3.cfg', 'weights/yolov3.weights')
+yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3-tiny.cfg', 'weights/yolov3-tiny.weights')
+# yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3.cfg', 'weights/yolov3.weights')
+yolo_net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_OPENCL)
+# yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
 labels = Path('yolo_labels/labels.txt').open().read().split('\n')
 layer_names = yolo_net.getLayerNames()
@@ -43,9 +46,12 @@ def recognize_face(img):
                 boxes.append([face_x, face_y, int(width), int(height)])
 
     # Apply Non-Maximum Suppression to detected objects
-    nms_box_ids = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3).flatten()
+    nms_box_ids = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3)
 
-    return [{'label': labels[label_ids[i]], 'area': boxes[i], 'confidence': confidences[i]} for i in nms_box_ids]
+    if len(nms_box_ids) != 0:
+        return [{'label': labels[label_ids[i]], 'area': boxes[i], 'confidence': confidences[i]} for i in nms_box_ids.flatten()]
+    else:
+        return []
 
 
 # Render nothing if no objects recognized
