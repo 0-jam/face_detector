@@ -11,7 +11,7 @@ from modules.cv_dark_recognizer import recognize_face
 
 def main():
     parser = argparse.ArgumentParser(description='Recognize objects from a video file without showing any images')
-    parser.add_argument('-i', '--input', type=str, help='Input file (default: Webcam on your computer)')
+    parser.add_argument('--input', '-i', type=str, help='Input file (default: Webcam on your computer)')
     parser.add_argument('--output', '-o', type=str, help='Output file (default: none)')
     args = parser.parse_args()
 
@@ -32,11 +32,12 @@ def main():
 
         if ret:
             num_frames += 1
-            objects.append(recognize_face(frame))
+            faces = recognize_face(frame)
+            objects.append(faces)
             elapsed_time = time.time() - start_time
             fps = num_frames / elapsed_time
             print('Found objects: {}, Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)'.format(
-                len(objects),
+                len(faces),
                 elapsed_time,
                 num_frames,
                 fps,
