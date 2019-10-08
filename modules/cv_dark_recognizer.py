@@ -5,8 +5,6 @@ import numpy as np
 
 import settings
 
-cv2.ocl.useOpenCL()
-
 yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3-tiny.cfg', 'weights/yolov3-tiny.weights')
 # yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3.cfg', 'weights/yolov3.weights')
 yolo_net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)

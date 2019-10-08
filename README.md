@@ -11,6 +11,7 @@
    1. [Closing OpenGL window](#closing-opengl-window)
 1. [Installation](#installation)
 1. [Configuration](#configuration)
+   1. [Check available OpenCL platform](#check-available-opencl-platform)
 1. [Usage](#usage)
 
 ---
@@ -28,7 +29,7 @@
 ## Todo & Issues
 
 - [ ] JSON output for webcam object detection
-- [ ] Add selecting camera resolution
+- [ ] Add selecting webcam resolution
 - [x] Separate OpenCV video capture from Qt GUI
 - Try various algorythms
     - [x] YOLOv3
@@ -87,13 +88,27 @@ YOLO_WEIGHTS = 'weights/yolov2.weights'
 YOLO_CFG = 'cfg/yolov2.cfg'
 
 # Maximum webcam resolution for video object recognizer
-# It is not affected to loading video files
+# It does not affect loading video files
 MAX_CAMERA_RES_H = 1920
 MAX_CAMERA_RES_V = 1080
 
 # Specify OpenCL device for OpenCV and config directory
+# Set :cpu to force CPU calculating
+# Set :igpu to use your internal GPU (disable OpenCL)
 OPENCV_OPENCL_DEVICE=:dgpu
 OPENCV_OCL4DNN_CONFIG_PATH='/home/<user>/.cache/opencv/4.1/opencl_cache'
+```
+
+### Check available OpenCL platform
+
+```
+$ opencv_version --opencl
+4.1.1
+OpenCL Platforms:
+    NVIDIA CUDA
+        dGPU: GeForce RTX 2080 (OpenCL 1.2 CUDA)
+    Intel(R) OpenCL HD Graphics
+        iGPU: Intel(R) Gen9 HD Graphics NEO (OpenCL 2.1 NEO )
 ```
 
 ## Usage
