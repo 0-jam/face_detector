@@ -27,8 +27,9 @@
 
 ## Todo & Issues
 
-- [ ] Separate OpenCV video capture from Qt GUI
+- [ ] JSON output for webcam object detection
 - [ ] Add selecting camera resolution
+- [x] Separate OpenCV video capture from Qt GUI
 - Try various algorythms
     - [x] YOLOv3
     - [ ] [M2Det](https://qijiezhao.github.io/imgs/m2det.pdf)
@@ -84,6 +85,15 @@ CASCADE_CLASSIFIER_TYPE = 'haarcascade_frontalface_default.xml'
 # Path to YOLOv2 classifier
 YOLO_WEIGHTS = 'weights/yolov2.weights'
 YOLO_CFG = 'cfg/yolov2.cfg'
+
+# Maximum webcam resolution for video object recognizer
+# It is not affected to loading video files
+MAX_CAMERA_RES_H = 1920
+MAX_CAMERA_RES_V = 1080
+
+# Specify OpenCL device for OpenCV and config directory
+OPENCV_OPENCL_DEVICE=:dgpu
+OPENCV_OCL4DNN_CONFIG_PATH='/home/<user>/.cache/opencv/4.1/opencl_cache'
 ```
 
 ## Usage
@@ -91,9 +101,11 @@ YOLO_CFG = 'cfg/yolov2.cfg'
 - `-h` option for help
 
 ```bash
+# *_face_recognizer.py except (cli_)v_face_recognizer.py has the same usage
 $ python face_recognizer.py images/sample.jpg
 
 # Start your computer's webcam if no file passed
+# cli_v_face_recognizer.py has the same usage
 $ python v_face_recognizer.py -i images/sample.mp4
 ```
 
