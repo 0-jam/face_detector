@@ -81,6 +81,11 @@ MAX_CAMERA_RES_V = 1080
 # Set :igpu to use your internal GPU (disable OpenCL)
 OPENCV_OPENCL_DEVICE=:dgpu
 OPENCV_OCL4DNN_CONFIG_PATH='/home/<user>/.cache/opencv/4.1/opencl_cache'
+
+# Path to the pre-trained YOLOv3 model and labels
+YOLO_WEIGHTS = 'weights/yolov3-tiny.weights'
+YOLO_CFG = 'cfg/yolov3-tiny.cfg'
+YOLO_LABELS = 'yolo_labels/labels.txt'
 ```
 
 ### Check available OpenCL platform

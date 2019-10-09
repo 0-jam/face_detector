@@ -5,10 +5,10 @@ import numpy as np
 
 import settings
 
-yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3-tiny.cfg', 'weights/yolov3-tiny.weights')
+yolo_net = cv2.dnn.readNetFromDarknet(settings.YOLO_CFG, settings.YOLO_WEIGHTS)
 yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_OPENCL)
 
-labels = Path('yolo_labels/labels.txt').open().read().split('\n')
+labels = Path(settings.YOLO_LABELS).open().read().split('\n')
 layer_names = yolo_net.getLayerNames()
 output_layer_names = [layer_names[i[0] - 1] for i in yolo_net.getUnconnectedOutLayers()]
 
