@@ -23,7 +23,6 @@
 - Python 3.7.4
 - Arch Linux x86_64 (2019/10/4)
 - Windows 10 1903
-- TensorFlow < 2.0 (for Darkflow object recognizer)
 - OpenCV 4.1.1
 
 ## Todo & Issues
@@ -61,17 +60,6 @@ $ pip install -U --user -r requirements.txt
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
 4.1.1
-
-# dark_recognizer.py
-$ pip install Cython
-# Install DarkFlow
-$ git clone git@github.com:thtrieu/darkflow.git
-$ cd darkflow
-$ python setup.py build_ext --inplace
-$ pip install .
-# Download and place YOLOv2 weights file
-$ mkdir weights
-$ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-tiny.weights
 ```
 
 ## Configuration
@@ -82,10 +70,6 @@ $ wget https://pjreddie.com/media/files/yolov2-tiny.weights -O weights/yolov2-ti
 ```bash
 # OpenCV classifier type
 CASCADE_CLASSIFIER_TYPE = 'haarcascade_frontalface_default.xml'
-
-# Path to YOLOv2 classifier
-YOLO_WEIGHTS = 'weights/yolov2.weights'
-YOLO_CFG = 'cfg/yolov2.cfg'
 
 # Maximum webcam resolution for video object recognizer
 # It does not affect loading video files

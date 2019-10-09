@@ -6,10 +6,7 @@ import numpy as np
 import settings
 
 yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3-tiny.cfg', 'weights/yolov3-tiny.weights')
-# yolo_net = cv2.dnn.readNetFromDarknet('cfg/yolov3.cfg', 'weights/yolov3.weights')
-yolo_net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
 yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_OPENCL)
-# yolo_net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 
 labels = Path('yolo_labels/labels.txt').open().read().split('\n')
 layer_names = yolo_net.getLayerNames()
@@ -17,7 +14,7 @@ output_layer_names = [layer_names[i[0] - 1] for i in yolo_net.getUnconnectedOutL
 
 
 def recognize_face(img):
-    img_blob = cv2.dnn.blobFromImage(img, scalefactor=1.0/255.0, size=(416, 416), swapRB=True)
+    img_blob = cv2.dnn.blobFromImage(img, scalefactor=1.0 / 255.0, size=(416, 416), swapRB=True)
     img_h, img_w = img.shape[:2]
 
     yolo_net.setInput(img_blob)
@@ -32,6 +29,7 @@ def recognize_face(img):
             label_index = np.argmax(scores)
             confidence = scores[label_index]
             # Remove low confidence (= probability) objects
+            # Threshould of confidence is fixed for the performance reason
             if confidence > 0.7:
                 label_ids.append(label_index)
                 confidences.append(float(confidence))
