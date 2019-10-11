@@ -5,8 +5,9 @@ from queue import Queue
 import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
 
-from modules.image_recognizer import draw_rectangles, recognize_face
-# from modules.dark_recognizer import draw_rectangles, recognize_face
+# from modules.image_recognizer import draw_rectangles, recognize_face
+from modules.cv_dark_recognizer import draw_rectangles, recognize_face
+from modules.resolution import get_video_size, get_webcam_resolution
 
 
 def cv2pixmap(cvimage):
@@ -58,7 +59,7 @@ class VideoArea(ImageArea):
             raise Exception('Could not open the video, please specify a valid video file path or webcam device number')
 
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
-        self.orig_size = (int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        self.orig_size = get_video_size(self.video)
         self.frames = Queue(maxsize=64)
         self.num_frames = 0
 
