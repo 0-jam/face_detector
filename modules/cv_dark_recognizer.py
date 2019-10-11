@@ -45,7 +45,14 @@ def recognize_face(img):
     nms_box_ids = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3)
 
     if len(nms_box_ids) != 0:
-        return [{'label': labels[label_ids[i]], 'area': boxes[i], 'confidence': confidences[i]} for i in nms_box_ids.flatten()]
+        return [{
+            'label': labels[label_ids[i]],
+            'topleft_x': boxes[i][0],
+            'topleft_y': boxes[i][1],
+            'width': boxes[i][2],
+            'height': boxes[i][3],
+            'confidence': confidences[i]
+        } for i in nms_box_ids.flatten()]
     else:
         return []
 
@@ -53,8 +60,8 @@ def recognize_face(img):
 # Render nothing if no objects recognized
 def draw_rectangles(img, objects):
     for obj in objects:
-        topleft_x, topleft_y = obj['area'][0], obj['area'][1]
-        bottomright_x, bottomright_y = topleft_x + obj['area'][2], topleft_y + obj['area'][3]
+        topleft_x, topleft_y = obj['topleft_x'], obj['topleft_y']
+        bottomright_x, bottomright_y = topleft_x + obj['width'], topleft_y + obj['height']
         cv2.rectangle(
             img,
             (topleft_x, topleft_y),

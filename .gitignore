@@ -112,6 +112,7 @@ images/
 *.avi
 *.mp4
 *.json
+*.csv
 
 # YOLO files
 *.weights

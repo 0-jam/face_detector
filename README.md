@@ -21,19 +21,20 @@
 ### Software
 
 - Python 3.7.4
-- Arch Linux x86_64 (2019/10/4)
+- Arch Linux x86_64 (2019/10/11)
 - Windows 10 1903
 - OpenCV 4.1.1
 
 ## Todo & Issues
 
-- [ ] JSON output for webcam object detection
 - [ ] Add selecting webcam resolution
-- [x] Separate OpenCV video capture from Qt GUI
 - Try various algorythms
     - [x] YOLOv3
     - [ ] [M2Det](https://qijiezhao.github.io/imgs/m2det.pdf)
     - [ ] [SSD](https://arxiv.org/pdf/1512.02325.pdf)
+- [x] JSON output for webcam object detection
+    - Switched output format from JSON to CSV
+- [x] Separate OpenCV video capture from Qt GUI
 - [x] ~~OpenGL support for displaying to improve rendering performance~~
 - [x] OpenCV cascade classifier
     - [x] [Video](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html)
