@@ -119,3 +119,4 @@ images/
 *.names
 *.cfg
 yolo_labels/*.txt
+*.data
