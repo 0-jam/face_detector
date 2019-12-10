@@ -5,7 +5,7 @@ from pathlib import Path
 
 import cv2
 
-from modules.cv_dark_recognizer import recognize_face
+from modules.dark_recognizer import recognize_face
 
 
 def main():
@@ -25,8 +25,9 @@ def main():
     num_frames = 0
     orig_fps = vc.get(cv2.CAP_PROP_FPS)
     start_time = time.time()
-    with Path(args.output).open('w') as out_csv:
-        writer = csv.DictWriter(out_csv, fieldnames=['frame', 'label', 'topleft_x', 'topleft_y', 'width', 'height', 'confidence'])
+    with Path(args.output).open('a') as out_csv:
+        writer = csv.DictWriter(out_csv, fieldnames=['frame', 'label', 'confidence', 'position'])
+        # writer = csv.DictWriter(out_csv, fieldnames=['frame', 'label', 'topleft_x', 'topleft_y', 'width', 'height', 'confidence'])
         writer.writeheader()
 
         while vc.isOpened():
