@@ -21,3 +21,9 @@ def get_webcam_resolution(device_num=0):
     camera.release()
 
     return resolution
+
+
+def set_webcam_resolution(camera, width=3840, height=2160, fps=144):
+    camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    camera.set(cv2.CAP_PROP_FPS, fps)
