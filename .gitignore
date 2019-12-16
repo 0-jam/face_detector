@@ -112,9 +112,11 @@ images/
 *.avi
 *.mp4
 *.json
+*.csv
 
 # YOLO files
 *.weights
 *.names
 *.cfg
 yolo_labels/*.txt
+*.data

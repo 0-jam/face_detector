@@ -1,11 +1,10 @@
 import argparse
-import json
-import time
 from pathlib import Path
+import time
 
 import cv2
 
-from modules.cv_dark_recognizer import recognize_face
+from modules.dark_recognizer import recognize_face
 
 
 def main():
@@ -20,6 +19,7 @@ def main():
     faces = recognize_face(img)
     elapsed_time = time.time() - start_time
     print('Found objects: {}, Elapsed time: {:.2f} sec'.format(len(faces), elapsed_time))
+    print(faces)
 
     out_path = args.output
     if out_path is not None:
@@ -27,5 +27,5 @@ def main():
             out_json.write(json.dumps(faces, ensure_ascii=False))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

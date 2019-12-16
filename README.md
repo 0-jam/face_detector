@@ -7,9 +7,10 @@
 
 1. [Environment](#environment)
    1. [Software](#software)
-1. [Todo & Issues](#todo--issues)
+1. [Todo &amp; Issues](#todo-amp-issues)
    1. [Closing OpenGL window](#closing-opengl-window)
 1. [Installation](#installation)
+   1. [Installing Darknet](#installing-darknet)
 1. [Configuration](#configuration)
    1. [Check available OpenCL platform](#check-available-opencl-platform)
 1. [Usage](#usage)
@@ -20,20 +21,22 @@
 
 ### Software
 
-- Python 3.7.4
-- Arch Linux x86_64 (2019/10/4)
+- Python 3.8.0 **except GUI video recognizer**
+    - GUI video recognizer works on Python 3.7.4 or earlier
+- Arch Linux x86_64 (2019/12/9)
 - Windows 10 1903
-- OpenCV 4.1.1
+- OpenCV 4.1.2
 
 ## Todo & Issues
 
-- [ ] JSON output for webcam object detection
 - [ ] Add selecting webcam resolution
-- [x] Separate OpenCV video capture from Qt GUI
 - Try various algorythms
     - [x] YOLOv3
     - [ ] [M2Det](https://qijiezhao.github.io/imgs/m2det.pdf)
     - [ ] [SSD](https://arxiv.org/pdf/1512.02325.pdf)
+- [x] JSON output for webcam object detection
+    - Switched output format from JSON to CSV
+- [x] Separate OpenCV video capture from Qt GUI
 - [x] ~~OpenGL support for displaying to improve rendering performance~~
 - [x] OpenCV cascade classifier
     - [x] [Video](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html)
@@ -59,8 +62,16 @@ python: ../../src/xcb_io.c:151: append_pending_request: Assertion `!xcb_xlib_unk
 $ pip install -U --user -r requirements.txt
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
-4.1.1
+4.1.2
 ```
+
+### Installing Darknet
+
+1. Clone [tiagoshibata/darknet](https://github.com/tiagoshibata/darknet) (Including fixes for OpenCV 4)
+1. Move to cloned darknet directory
+1. `$ make`
+1. Return this project's root directory
+1. Copy compiled `libdarknet.so` file to `<this project's root>/lib`
 
 ## Configuration
 
@@ -83,16 +94,17 @@ OPENCV_OPENCL_DEVICE=:dgpu
 OPENCV_OCL4DNN_CONFIG_PATH='/home/<user>/.cache/opencv/4.1/opencl_cache'
 
 # Path to the pre-trained YOLOv3 model and labels
-YOLO_WEIGHTS = 'weights/yolov3-tiny.weights'
 YOLO_CFG = 'cfg/yolov3-tiny.cfg'
+YOLO_WEIGHTS = 'weights/yolov3-tiny.weights'
 YOLO_LABELS = 'yolo_labels/labels.txt'
+YOLO_DATA = 'data/coco.data'
 ```
 
 ### Check available OpenCL platform
 
 ```
 $ opencv_version --opencl
-4.1.1
+4.1.2
 OpenCL Platforms:
     NVIDIA CUDA
         dGPU: GeForce RTX 2080 (OpenCL 1.2 CUDA)
@@ -112,7 +124,3 @@ $ python face_recognizer.py images/sample.jpg
 # cli_v_face_recognizer.py has the same usage
 $ python v_face_recognizer.py -i images/sample.mp4
 ```
-
-[tf]: https://www.tensorflow.org/
-[pydl]: https://www.python.org/downloads/release/python-367/
-[opencv]: https://opencv.org/releases.html
