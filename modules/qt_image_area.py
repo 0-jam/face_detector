@@ -6,7 +6,7 @@ import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
 
 # from modules.image_recognizer import draw_rectangles, recognize_face
-from modules.cv_dark_recognizer import draw_rectangles, recognize_face
+from modules.dark_recognizer import draw_rectangles, recognize_face
 from modules.resolution import get_video_size, get_webcam_resolution
 
 
