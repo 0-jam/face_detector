@@ -7,7 +7,6 @@
 
 1. [Environment](#environment)
     1. [Software](#software)
-1. [Todo & Issues](#todo--issues)
     1. [Closing OpenGL window](#closing-opengl-window)
 1. [Installation](#installation)
     1. [GNU/Linux](#gnulinux)
@@ -27,23 +26,6 @@
     - GUI video recognizer works on Python 3.7.4 or earlier
 - Arch Linux x86_64 (2019/12/9)
 - OpenCV 4.1.2
-
-## Todo & Issues
-
-- Try various algorythms
-    - [x] YOLOv3
-    - [ ] YOLOv4
-    - [ ] [M2Det](https://qijiezhao.github.io/imgs/m2det.pdf)
-    - [ ] [SSD](https://arxiv.org/pdf/1512.02325.pdf)
-- [x] JSON output for webcam object detection
-    - Switched output format from JSON to CSV
-- [x] Separate OpenCV video capture from Qt GUI
-- [x] ~~OpenGL support for displaying to improve rendering performance~~
-- [x] OpenCV cascade classifier
-    - [x] [Video](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html)
-        - [x] Reading from the file
-        - [x] Reading from the webcam
-    - [x] [Picture](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html#face-detection)
 
 ### Closing OpenGL window
 
