@@ -5,8 +5,8 @@ from queue import Queue
 import cv2
 from PySide2 import QtCore, QtGui, QtWidgets
 
-# from modules.image_recognizer import draw_rectangles, recognize_face
-from modules.dark_recognizer import draw_rectangles, recognize_face
+from modules.image_recognizer import draw_rectangles, recognize_face
+# from modules.dark_recognizer import draw_rectangles, recognize_face
 from modules.resolution import get_video_size, get_webcam_resolution
 
 
@@ -99,7 +99,10 @@ class VideoArea(ImageArea):
         self.loader.start()
         self.updater.start()
 
-        self.fps_counter.start((1 / self.orig_fps) * 1000)
+        try:
+            self.fps_counter.start((1 / self.orig_fps) * 1000)
+        except ZeroDivisionError:
+            print("FPS counter is not available")
 
         super().show()
 
@@ -148,6 +151,8 @@ class VideoArea(ImageArea):
         self.fps_counter.stop()
 
     def get_fps(self):
+        if self.orig_fps <= 0:
+            return ''
         elapsed_time = time.time() - self.start_time
         fps = self.num_frames / elapsed_time
         return "Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)".format(
