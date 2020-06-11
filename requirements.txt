@@ -1,4 +1,0 @@
-opencv-python
-opencv-contrib-python
-python-dotenv
-PySide2
