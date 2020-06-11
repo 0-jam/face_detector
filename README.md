@@ -22,10 +22,10 @@
 
 ### Software
 
-- Python 3.8.0 **except GUI video recognizer**
+- Python 3.8.3 **except GUI video recognizer**
     - GUI video recognizer works on Python 3.7.4 or earlier
-- Arch Linux x86_64 (2019/12/9)
-- OpenCV 4.1.2
+- Arch Linux x86_64 (2020/06/11)
+- OpenCV 4.2.0
 
 ### Closing OpenGL window
 
@@ -47,7 +47,7 @@ python: ../../src/xcb_io.c:151: append_pending_request: Assertion `!xcb_xlib_unk
 $ pip install -U --user -r requirements.txt
 # Make sure the version number can be displayed
 $ python -c "import cv2; print(cv2.__version__)"
-4.1.2
+4.2.0
 ```
 
 ### Windows
@@ -97,7 +97,7 @@ YOLO_DATA = 'data/coco.data'
 
 ```
 $ opencv_version --opencl
-4.1.2
+4.2.0
 OpenCL Platforms:
     NVIDIA CUDA
         dGPU: GeForce RTX 2080 (OpenCL 1.2 CUDA)
