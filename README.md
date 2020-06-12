@@ -13,7 +13,6 @@
     1. [Windows](#windows)
     1. [Installing Darknet](#installing-darknet)
 1. [Configuration](#configuration)
-    1. [Check available OpenCL platform](#check-available-opencl-platform)
 1. [Usage](#usage)
 
 ---
@@ -80,29 +79,11 @@ CASCADE_CLASSIFIER_TYPE = 'haarcascade_frontalface_default.xml'
 MAX_CAMERA_RES_H = 1920
 MAX_CAMERA_RES_V = 1080
 
-# Specify OpenCL device for OpenCV and config directory
-# Set :cpu to force CPU calculating
-# Set :igpu to use your internal GPU (disable OpenCL)
-OPENCV_OPENCL_DEVICE=:dgpu
-OPENCV_OCL4DNN_CONFIG_PATH='/home/<user>/.cache/opencv/4.1/opencl_cache'
-
 # Path to the pre-trained YOLOv3 model and labels
 YOLO_CFG = 'cfg/yolov3-tiny.cfg'
 YOLO_WEIGHTS = 'weights/yolov3-tiny.weights'
 YOLO_LABELS = 'yolo_labels/labels.txt'
 YOLO_DATA = 'data/coco.data'
-```
-
-### Check available OpenCL platform
-
-```
-$ opencv_version --opencl
-4.2.0
-OpenCL Platforms:
-    NVIDIA CUDA
-        dGPU: GeForce RTX 2080 (OpenCL 1.2 CUDA)
-    Intel(R) OpenCL HD Graphics
-        iGPU: Intel(R) Gen9 HD Graphics NEO (OpenCL 2.1 NEO )
 ```
 
 ## Usage
