@@ -14,8 +14,11 @@ def main():
     parser.add_argument('--output', '-o', type=str, default='faces.csv', help='Output file (default: faces.csv)')
     args = parser.parse_args()
 
-    if args.input:
-        video = args.input
+    if args.input is not None:
+        try:
+            video = int(args.input)
+        except ValueError:
+            video = str(Path(args.input))
     else:
         video = 0
 
