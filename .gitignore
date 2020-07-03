@@ -107,6 +107,7 @@ ENV/
 images/
 *.png
 *.jpg
+*.jpeg
 *.bmp
 *.gif
 *.avi
