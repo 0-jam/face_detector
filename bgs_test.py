@@ -1,10 +1,15 @@
 import cv2
 import numpy as np
 
+from modules.resolution import get_video_size
+
 
 def main():
     video = cv2.VideoCapture(0)
     bgs = cv2.createBackgroundSubtractorMOG2()
+
+    video_width, video_height = get_video_size(video)
+    total_pixel = video_width * video_height
 
     try:
         while True:
@@ -19,7 +24,6 @@ def main():
             cv2.imshow('FG Mask', fg_mask)
             cv2.imshow('FG Mask (applied threshold)', th_fg_mask)
 
-            total_pixel = th_fg_mask.shape[0] * th_fg_mask.shape[1]
             frame_diff = np.count_nonzero(th_fg_mask == 0)
 
             print('difference: {:5d} / {} ({:.2f}%)'.format(frame_diff, total_pixel, (frame_diff / total_pixel) * 100), end='\r', flush=True)
