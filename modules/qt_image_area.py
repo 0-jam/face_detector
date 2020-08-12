@@ -7,7 +7,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 from modules.image_recognizer import draw_rectangles, recognize_face
 # from modules.dark_recognizer import draw_rectangles, recognize_face
-from modules.resolution import get_video_size, get_webcam_resolution
+from modules.resolution import get_video_size
 
 
 def cv2pixmap(cvimage):
@@ -153,6 +153,7 @@ class VideoArea(ImageArea):
     def get_fps(self):
         if self.orig_fps <= 0:
             return ''
+
         elapsed_time = time.time() - self.start_time
         fps = self.num_frames / elapsed_time
         return "Elapsed time: {:.2f} sec, frame count: {} ({:.2f} FPS, {:.2f} % speed)".format(
@@ -164,3 +165,84 @@ class VideoArea(ImageArea):
 
     def show_fps(self):
         self.setWindowTitle(self.get_fps())
+
+
+class VArea(ImageArea):
+    def __init__(self, video_path):
+        # Loading video
+        self.video = cv2.VideoCapture()
+
+        try:
+            video_path = int(video_path)
+        except ValueError:
+            video_path = str(Path(video_path))
+
+        self.video.open(video_path)
+
+        if not self.video.isOpened():
+            raise Exception('Could not open the video, please specify a valid video file path or webcam device number')
+
+        self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
+        self.orig_size = get_video_size(self.video)
+        self.frames = Queue(maxsize=64)
+        self.num_frames = 0
+
+        # Set viewport
+        super().__init__()
+
+        # Initializing frame loader
+        self.loader = QtCore.QTimer(self.view)
+        self.loader.timeout.connect(self.load_frame)
+
+        # Initializing viewport updater
+        self.updater = QtCore.QTimer(self.view)
+        self.updater.timeout.connect(self.update)
+
+        self.setWindowTitle('video')
+
+    def closeEvent(self, event):
+        self.stop_video()
+        self.stop_render()
+
+    def show(self):
+        # Set window size
+        self.setGeometry(0, 0, self.orig_size[0], self.orig_size[1])
+
+        self.start_time = time.time()
+        self.loader.start()
+        self.updater.start()
+
+        super().show()
+
+    def load_frame(self):
+        ret, frame = self.video.read()
+
+        if ret:
+            self.num_frames += 1
+
+            self.frames.put(frame)
+        else:
+            self.stop_video()
+            return
+
+    def update(self):
+        if not self.frames.qsize() > 0:
+            self.stop_render()
+            return
+
+        frame = self.frames.get()
+        self.setCVImage(frame)
+
+    def frame_buffered(self):
+        return self.frames.qsize() > 0
+
+    def stop_video(self):
+        print('Video stopped')
+
+        self.video.release()
+        self.loader.stop()
+
+    def stop_render(self):
+        print('Rendering stopped')
+
+        self.updater.stop()
