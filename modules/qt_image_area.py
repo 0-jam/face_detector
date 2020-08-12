@@ -185,7 +185,6 @@ class VArea(ImageArea):
         self.orig_fps = self.video.get(cv2.CAP_PROP_FPS)
         self.orig_size = get_video_size(self.video)
         self.frames = Queue(maxsize=64)
-        self.num_frames = 0
 
         # Set viewport
         super().__init__()
@@ -218,8 +217,6 @@ class VArea(ImageArea):
         ret, frame = self.video.read()
 
         if ret:
-            self.num_frames += 1
-
             self.frames.put(frame)
         else:
             self.stop_video()
