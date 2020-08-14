@@ -31,11 +31,12 @@ def main():
             diffs.append(frame_diff)
             avg_diff = mean(diffs)
 
-            print('difference: {:5d} / {:9d} ({:.2f}%), average: {:.3f}'.format(
+            print('difference: {:5d} / {:9d} ({:.2f}%), average: {:.3f} ({:.2f}%)'.format(
                 frame_diff,
                 total_pixel,
                 (frame_diff / total_pixel) * 100,
                 avg_diff,
+                (avg_diff / total_pixel) * 100,
             ), end='\r', flush=True)
 
             cv2.waitKey(1)
