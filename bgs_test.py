@@ -1,3 +1,6 @@
+from collections import deque
+from statistics import mean
+
 import cv2
 import numpy as np
 
@@ -10,6 +13,10 @@ def main():
 
     video_width, video_height = get_video_size(video)
     total_pixel = video_width * video_height
+    max_diff = 0
+    min_diff = total_pixel
+    avg_diff = 0
+    diffs = deque(maxlen=int(video.get(cv2.CAP_PROP_FPS)) * 2)
 
     try:
         while True:
@@ -26,7 +33,23 @@ def main():
 
             frame_diff = np.count_nonzero(th_fg_mask == 0)
 
-            print('difference: {:5d} / {} ({:.2f}%)'.format(frame_diff, total_pixel, (frame_diff / total_pixel) * 100), end='\r', flush=True)
+            diffs.append(frame_diff)
+            avg_diff = mean(diffs)
+
+            if frame_diff > max_diff:
+                max_diff = frame_diff
+
+            if frame_diff < min_diff:
+                min_diff = frame_diff
+
+            print('difference: {:5d} / {:9d} ({:.2f}%), max: {:9d}, min: {:9d}, average: {:.3f}'.format(
+                frame_diff,
+                total_pixel,
+                (frame_diff / total_pixel) * 100,
+                max_diff,
+                min_diff,
+                avg_diff,
+            ), end='\r', flush=True)
 
             cv2.waitKey(1)
     except KeyboardInterrupt:
