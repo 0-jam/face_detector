@@ -12,6 +12,7 @@ opencv-python = "*"
 opencv-contrib-python = "*"
 python-dotenv = "*"
 PySide2 = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.8"
