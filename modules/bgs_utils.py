@@ -6,7 +6,7 @@ import tqdm
 class BGSubtractor(object):
     def __init__(self):
         self.histsize = 30 * 60 * 60
-        self.bgs = cv2.createBackgroundSubtractorMOG2(history=self.histsize)
+        self.reset_bgs()
 
     def apply_bgs(self, frame):
         fg_mask = self.bgs.apply(frame)
@@ -14,7 +14,8 @@ class BGSubtractor(object):
 
         return th_fg_mask
 
-    def calc_difference(self, frame):
+    @staticmethod
+    def calc_difference(frame):
         return np.count_nonzero(frame == 0)
 
     # Fill history with the current frame
