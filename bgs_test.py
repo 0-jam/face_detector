@@ -1,3 +1,4 @@
+import argparse
 from collections import deque
 from statistics import mean
 
@@ -8,13 +9,18 @@ from modules.resolution import get_video_size
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Recognize faces from an video file')
+    parser.add_argument('-t', '--threshold', type=int, default=127, help='Threshold (default: 192)')
+    args = parser.parse_args()
+
     video = cv2.VideoCapture(0)
-    bgs = BGSubtractor()
+    bgs = BGSubtractor(threshold=args.threshold)
 
     video_width, video_height = get_video_size(video)
     total_pixel = video_width * video_height
     avg_diff = 0
-    diffs = deque(maxlen=int(video.get(cv2.CAP_PROP_FPS)) * 2)
+    diffs = deque(maxlen=int(video.get(cv2.CAP_PROP_FPS)) * 3)
+    max_diff_rate = 0
 
     try:
         while True:
@@ -33,12 +39,16 @@ def main():
             avg_diff = mean(diffs)
             avg_diff_rate = (avg_diff / total_pixel) * 100
 
-            print('difference: {:5d} / {:9d} ({:.2f}%), average: {:.3f} ({:.2f}%)'.format(
+            if avg_diff_rate > max_diff_rate:
+                max_diff_rate = avg_diff_rate
+
+            print('difference: {:5d} / {:9d} ({:.2f}%), average: {:.3f} ({:.2f}%), max: {:.2f}%'.format(
                 frame_diff,
                 total_pixel,
                 (frame_diff / total_pixel) * 100,
                 avg_diff,
                 avg_diff_rate,
+                max_diff_rate,
             ), end='\r', flush=True)
 
             if avg_diff_rate > 50.0:

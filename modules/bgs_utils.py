@@ -4,13 +4,14 @@ import tqdm
 
 
 class BGSubtractor(object):
-    def __init__(self):
+    def __init__(self, threshold=127):
         self.histsize = 30 * 60 * 60
         self.reset_bgs()
+        self.threshold = threshold
 
     def apply_bgs(self, frame):
         fg_mask = self.bgs.apply(frame)
-        _, th_fg_mask = cv2.threshold(fg_mask, 127, 255, cv2.THRESH_BINARY_INV)
+        _, th_fg_mask = cv2.threshold(fg_mask, self.threshold, 255, cv2.THRESH_BINARY_INV)
 
         return th_fg_mask
 
