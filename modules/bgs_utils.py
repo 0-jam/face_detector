@@ -11,13 +11,13 @@ class BGSubtractor(object):
 
     def apply_bgs(self, frame):
         fg_mask = self.bgs.apply(frame)
-        _, th_fg_mask = cv2.threshold(fg_mask, self.threshold, 255, cv2.THRESH_BINARY_INV)
+        _, th_fg_mask = cv2.threshold(fg_mask, self.threshold, 255, cv2.THRESH_BINARY)
 
-        return th_fg_mask
+        return fg_mask, th_fg_mask
 
     @staticmethod
     def calc_difference(frame):
-        return np.count_nonzero(frame == 0)
+        return np.count_nonzero(frame == 255)
 
     # Fill history with the current frame
     # It takes a long time
