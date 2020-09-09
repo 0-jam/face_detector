@@ -10,11 +10,10 @@ from modules.resolution import get_video_size
 
 def main():
     parser = argparse.ArgumentParser(description='Recognize faces from an video file')
-    parser.add_argument('-t', '--threshold', type=int, default=127, help='Threshold (default: 192)')
     args = parser.parse_args()
 
     video = cv2.VideoCapture(0)
-    bgs = BGSubtractor(threshold=args.threshold)
+    bgs = BGSubtractor()
 
     video_width, video_height = get_video_size(video)
     total_pixel = video_width * video_height
@@ -50,10 +49,6 @@ def main():
                 avg_diff_rate,
                 max_diff_rate,
             ), end='\r', flush=True)
-
-            if avg_diff_rate > 50.0:
-                print('reset bgs')
-                bgs.reset_bgs()
 
             cv2.waitKey(1)
     except KeyboardInterrupt:
