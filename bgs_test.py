@@ -27,9 +27,12 @@ def main():
             if ret is None:
                 break
 
-            th_fg_mask = bgs.apply_bgs(frame)
+            frame_gs = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            cv2.imshow('Actual Image', frame)
+            fg_mask, th_fg_mask = bgs.apply_bgs(frame_gs)
+
+            cv2.imshow('Grayscale', frame_gs)
+            cv2.imshow('FG Mask', fg_mask)
             cv2.imshow('FG Mask (applied threshold)', th_fg_mask)
 
             frame_diff = bgs.calc_difference(th_fg_mask)
